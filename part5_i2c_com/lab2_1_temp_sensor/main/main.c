@@ -69,12 +69,13 @@ void app_main(void) {
 
         /* Read Temperature register */
         lm75a_readRegister(raw);
+        printf("raw data: 0x%x 0x%x\n", raw[0], raw[1]);
 
         /* Compute temperature */
         temperature = convertRawToTemperature(raw);
 
         /* Print temprature */
-		printf("Temperature: %.2f °C\n", temperature);
+		printf("Temperature: %.3f °C\n", temperature);
 	}
 
 }

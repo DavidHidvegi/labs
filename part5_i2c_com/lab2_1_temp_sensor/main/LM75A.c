@@ -54,22 +54,17 @@ esp_err_t lm75a_readRegister(uint8_t *raw) {
     // Write with ack : the READ command : at i2c_addr (7 bits) & READ (1 bit)
     i2c_master_write_byte(cmd_handle, (i2c_addr << 1) | I2C_MASTER_READ, true);
 
-
     // Read 2 bytes with NACK for the last byte (master)
     i2c_master_read(cmd_handle, raw, 2, I2C_MASTER_NACK);
-
 
     // Stop
     i2c_master_stop(cmd_handle);
 
-
     // Execute the cmd handle on timeout (1s)
     i2c_master_cmd_begin(i2c_port, cmd_handle, 1000);
 
-
     // Free memory
     i2c_cmd_link_delete(cmd_handle);
-
 
     return ESP_OK;
 }
@@ -83,8 +78,10 @@ esp_err_t lm75a_readRegister(uint8_t *raw) {
 float convertRawToTemperature(uint8_t *raw) {
     /* Compute temperature value */
     
+    int wholeNum = (int) raw[0];
+    int remainderNum = (int) (raw[1] >> 5);
 
-    return 1;
+    return wholeNum + remainderNum * 0.125f;
 }
 
 /**
@@ -106,4 +103,3 @@ esp_err_t lm75a_getTemperatureInDegree(float *temperature) {
 
     return ESP_OK;
 }
-
